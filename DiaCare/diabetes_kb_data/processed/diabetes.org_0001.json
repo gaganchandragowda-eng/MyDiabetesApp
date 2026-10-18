@@ -1,0 +1,25 @@
+{
+  "url": "https://diabetes.org/about-diabetes/type-2",
+  "source_domain": "diabetes.org",
+  "source_name": "American Diabetes Association",
+  "title": "Understanding Type 2 Diabetes",
+  "content": "In type 2 diabetes, your body does not use insulin properly—this is called insulin resistance . At first, your beta cells make extra insulin to make up for it. Over time, your pancreas can’t make enough insulin to keep your blood glucose at normal levels. Type 2 diabetes develops most often in middle-aged and older adults but is increasing in young people. Treatment for people with type 2 diabetes can include an eating plan, physical activity, and oral or injectable medications (including insulin) to help you meet your target blood glucose levels. The following symptoms of diabetes are typical. However, some people with type 2 diabetes have symptoms so mild that they go unnoticed. Early detection and treatment of diabetes can decrease the risk of developing the complications of diabetes . Although there are many similarities between type 1 and type 2 diabetes, the cause of each is very different. And the treatment is usually quite different, too. Some people, especially adults who are newly diagnosed with type 1 diabetes, may have symptoms similar to type 2 diabetes and this overlap between types can be confusing. Take our Risk Test to find out if you are at increased risk for having type 2 diabetes. If you or someone you know is diagnosed with type 2 diabetes but isn’t responding well to the typical treatments for type 2 diabetes, it may be worth a visit to an endocrinologist to determine what type of diabetes is happening. Generally, this requires antibody tests and possibly the measurement of a C-peptide level. Women with gestational diabetes often have no symptoms, which is why it's important for at-risk women to be tested at the proper time during pregnancy. Have you already been diagnosed with diabetes but are concerned about symptoms that may be the result of complications related to diabetes? With your support, the American Diabetes Association® can continue our lifesaving work to make breakthroughs in research and provide people with the resources they need to fight diabetes.",
+  "topics": [
+    "treatment",
+    "symptoms",
+    "complications"
+  ],
+  "word_count": 333,
+  "quality_score": 0.9,
+  "trust_score": 1.0,
+  "scraped_date": "2025-10-22T08:10:15.662963",
+  "headers": [
+    "Understanding Type 2 Diabetes",
+    "What is Type 2 Diabetes?",
+    "Symptoms of Type 2 Diabetes",
+    "Maybe it’s a different type",
+    "Gestational diabetes",
+    "Symptoms of diabetes complications",
+    "Give Today and Change lives!"
+  ]
+}

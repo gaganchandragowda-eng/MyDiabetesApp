@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Recommended Doctors - DiaCare</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            background: #f3f4f7;
+            font-family: 'Poppins', sans-serif;
+            padding: 40px;
+        }
+        .card {
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+            background: #fff;
+            transition: transform .18s ease, box-shadow .18s ease;
+        }
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 16px 40px rgba(0,0,0,0.10);
+        }
+        .section-title {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: #667eea;
+            margin-bottom: 25px;
+        }
+        .doctor-meta { color: #6b7280; margin-bottom: 8px; }
+        .doctor-contact { margin-top: 10px; display:flex; gap:8px; }
+        .small-muted { color: #6b7280; font-size: .95rem; }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h3 class="section-title">Recommended Doctors for You</h3>
+
+    <div class="row">
+        {% for d in recommended_doctors %}
+        <div class="col-md-4 mb-4">
+            <div class="card p-3 shadow-sm">
+
+                <h5 class="mb-1">{{ d.full_name }}</h5>
+                <div class="doctor-meta">{{ d.specialization or 'General' }} — {{ d.hospital_name or 'Private Practice' }}</div>
+
+                <p class="small-muted mb-1"><strong>Experience:</strong> {{ d.years_experience or 0 }} years</p>
+                <p class="small-muted mb-1"><strong>Email:</strong> {{ d.email }}</p>
+                <p class="small-muted mb-2"><strong>Phone:</strong> {{ d.phone or 'Not provided' }}</p>
+
+                <!-- Choose doctor button -->
+                <form method="POST" action="{{ url_for('choose_doctor') }}">
+                    <input type="hidden" name="doctor_id" value="{{ d.id }}">
+                    <button type="submit" class="btn btn-primary w-100 mt-2" aria-label="Choose {{ d.full_name }}">Choose this Doctor</button>
+                </form>
+
+                <div class="doctor-contact mt-2">
+                    <!-- Call button -->
+                    {% if d.phone %}
+                    <a href="tel:{{ d.phone | replace(' ', '') }}" class="btn btn-outline-primary w-50" aria-label="Call {{ d.full_name }}">
+                        📞 Call
+                    </a>
+                    {% else %}
+                    <button class="btn btn-outline-secondary w-50" disabled>📞 Call</button>
+                    {% endif %}
+
+                    <!-- WhatsApp button -->
+                    {% if d.phone %}
+                    {# sanitize phone: remove non-digits (Jinja filter uses replace; for more complex cleaning do it server-side) #}
+                    {% set wa_num = d.phone | replace(' ', '') | replace('+', '') | replace('-', '') %}
+                    <a href="https://wa.me/{{ wa_num }}" target="_blank" rel="noopener noreferrer"
+                       class="btn btn-success w-50" aria-label="WhatsApp {{ d.full_name }}">
+                        💬 WhatsApp
+                    </a>
+                    {% else %}
+                    <button class="btn btn-secondary w-50" disabled>💬 WhatsApp</button>
+                    {% endif %}
+                </div>
+
+                <div class="mt-3">
+                    <a href="{{ url_for('dashboard') }}" class="btn btn-link p-0 small-muted">← Back to dashboard</a>
+                </div>
+
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <div class="mt-4">
+        <a href="{{ url_for('dashboard') }}" class="btn btn-outline-secondary">Skip for now</a>
+    </div>
+
+</div>
+
+</body>

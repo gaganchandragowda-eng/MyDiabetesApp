@@ -1,0 +1,25 @@
+{
+  "total_attempted": 136,
+  "successful": 74,
+  "failed": 2,
+  "blocked_robots": 8,
+  "duplicate_content": 2,
+  "low_quality": 50,
+  "by_source": {
+    "diabetes.org": 50,
+    "www.nhs.uk": 24
+  },
+  "by_topic": {
+    "symptoms": 21,
+    "treatment": 50,
+    "diet_nutrition": 40,
+    "complications": 14,
+    "lifestyle": 17,
+    "diagnosis": 7,
+    "causes": 6,
+    "management": 15,
+    "overview": 3,
+    "prevention": 16
+  },
+  "timestamp": "2025-10-22T08:14:48.574552"
+}

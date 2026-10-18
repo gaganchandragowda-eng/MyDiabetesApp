@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>DiaCare Report</title>
+
+<style>
+    body {
+        font-family: "Segoe UI", Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        color: #111827;
+        background: #ffffff;
+    }
+
+    .page {
+        padding: 40px 50px;
+    }
+
+    /* Header */
+    .header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 25px;
+    }
+
+    .logo {
+        width: 45px;
+        height: 45px;
+        background: #1E3A8A;
+        border-radius: 50%;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 22px;
+        font-weight: bold;
+        margin-right: 14px;
+    }
+
+    .title {
+        font-size: 22px;
+        font-weight: 700;
+        color: #1E3A8A;
+    }
+
+    /* Section Heading */
+    h2 {
+        font-size: 18px;
+        color: #1E3A8A;
+        margin-top: 28px;
+        margin-bottom: 10px;
+        font-weight: 700;
+        text-transform: uppercase;
+    }
+
+    hr {
+        border: none;
+        border-top: 1px solid #E5E7EB;
+        margin: 12px 0;
+    }
+
+    /* Cards */
+    .card {
+        border: 1px solid #E5E7EB;
+        border-radius: 8px;
+        padding: 14px 18px;
+        margin-bottom: 18px;
+        background: #F9FAFB;
+    }
+
+    .card table {
+        width: 100%;
+        font-size: 14px;
+    }
+
+    .card td:first-child {
+        font-weight: 600;
+        color: #1E3A8A;
+        width: 40%;
+    }
+
+    p {
+        font-size: 14px;
+        line-height: 1.6;
+        margin: 6px 0;
+    }
+
+    ul {
+        margin-top: 5px;
+        margin-bottom: 12px;
+        padding-left: 18px;
+    }
+
+    li {
+        margin-bottom: 4px;
+        font-size: 14px;
+    }
+
+    /* Footer */
+    footer {
+        position: fixed;
+        bottom: 10px;
+        left: 0;
+        right: 0;
+        text-align: center;
+        font-size: 11px;
+        color: #6B7280;
+    }
+
+</style>
+</head>
+
+<body>
+<div class="page">
+
+    <!-- Header -->
+    <div class="header">
+        <div class="logo">D</div>
+        <div class="title">DiaCare – Diabetes Assessment Report</div>
+    </div>
+
+    <!-- Patient Summary -->
+    <h2>Patient Summary</h2>
+    <div class="card">
+        <table>
+            <tr><td>Full Name</td><td>{{ patient.full_name }}</td></tr>
+            <tr><td>Email</td><td>{{ patient.email }}</td></tr>
+            <tr><td>Gender</td><td>{{ patient.gender }}</td></tr>
+            <tr><td>Age</td><td>{{ age }}</td></tr>
+            <tr><td>Assessment Date</td><td>{{ record.created_at }}</td></tr>
+        </table>
+    </div>
+
+    <!-- Prediction Summary -->
+    <h2>Prediction Summary</h2>
+    <div class="card">
+        <table>
+            <tr><td>Classification</td><td>{{ record.prediction_result }}</td></tr>
+            <tr><td>Risk Probability</td><td>{{ record.risk_probability }}%</td></tr>
+        </table>
+    </div>
+
+    <!-- Health Parameters -->
+    <h2>Health Parameters</h2>
+    <div class="card">
+        <table>
+            <tr><td>Glucose (mg/dL)</td><td>{{ record.glucose }}</td></tr>
+            <tr><td>HbA1c (%)</td><td>{{ record.hba1c }}</td></tr>
+            <tr><td>BMI</td><td>{{ record.bmi }}</td></tr>
+            <tr><td>Systolic BP</td><td>{{ record.systolic_bp }}</td></tr>
+            <tr><td>Triglycerides</td><td>{{ record.triglycerides }}</td></tr>
+        </table>
+    </div>
+
+    <!-- AI REPORT -->
+    <h2>Detailed Interpretation</h2>
+    {{ report_html | safe }}
+
+</div>
+
+<footer>
+Page 1 — DiaCare © {{ year }}
+</footer>
+
+</body>
+</html>

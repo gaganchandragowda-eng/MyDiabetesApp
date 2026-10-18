@@ -1,0 +1,100 @@
+import os
+import json
+import faiss
+import numpy as np
+from sentence_transformers import SentenceTransformer
+from openai import OpenAI
+
+# -------------------------------
+# ✅ Absolute Paths Configuration
+# -------------------------------
+BASE_DIR = "/Users/gagan/iCloud Drive (Archive)/Documents/MyDiabetesApp/DiabetesRAGProject"
+FAISS_INDEX_FILE = os.path.join(BASE_DIR, "diabetes_kb_data/processed/faiss_index.index")
+SECTIONS_FILE = os.path.join(BASE_DIR, "diabetes_kb_data/processed/sections.json")
+
+# -------------------------------
+# Constants
+# -------------------------------
+EMBEDDINGS_MODEL = "all-MiniLM-L6-v2"
+TOP_K = 5  # Number of relevant sections to retrieve
+
+# -------------------------------
+# Load FAISS index and sections
+# -------------------------------
+print("📖 Loading FAISS index and sections...")
+if not os.path.exists(FAISS_INDEX_FILE):
+    raise FileNotFoundError(f"❌ FAISS index not found at: {FAISS_INDEX_FILE}")
+
+if not os.path.exists(SECTIONS_FILE):
+    raise FileNotFoundError(f"❌ Sections file not found at: {SECTIONS_FILE}")
+
+index = faiss.read_index(FAISS_INDEX_FILE)
+
+with open(SECTIONS_FILE, "r", encoding="utf-8") as f:
+    sections = json.load(f)
+
+# -------------------------------
+# Initialize embedding model
+# -------------------------------
+print("🧠 Loading SentenceTransformer model...")
+model = SentenceTransformer(EMBEDDINGS_MODEL)
+
+# -------------------------------
+# Initialize OpenAI client
+# -------------------------------
+client = OpenAI()  # Ensure OPENAI_API_KEY is set in environment
+
+# -------------------------------
+# Retrieve top-k relevant sections
+# -------------------------------
+def retrieve_sections(query, k=TOP_K):
+    query_vec = model.encode([query], convert_to_numpy=True).astype("float32")
+    distances, indices = index.search(query_vec, k)
+    results = [sections[idx] for idx in indices[0]]
+    return results
+
+# -------------------------------
+# Generate descriptive answer
+# -------------------------------
+def generate_answer(query):
+    top_sections = retrieve_sections(query)
+    context_text = "\n".join(top_sections)
+
+    prompt = f"""
+You are an expert diabetes advisor. Based on the following knowledge base context, 
+generate a clear, descriptive, and medically accurate answer.
+
+Context:
+{context_text}
+
+Question:
+{query}
+
+Answer:
+"""
+
+    response = client.chat.completions.create(
+        model="gpt-4o-mini",
+        messages=[{"role": "user", "content": prompt}],
+        temperature=0.2,
+        max_tokens=500
+    )
+
+    answer = response.choices[0].message.content
+    return answer
+
+# -------------------------------
+# Run query loop
+# -------------------------------
+if __name__ == "__main__":
+    print("\n💡 RAG Answer Generation ready. Type your question (type 'exit' to quit):\n")
+    while True:
+        user_query = input("Your question: ")
+        if user_query.lower() in ["exit", "quit"]:
+            print("👋 Exiting...")
+            break
+
+        answer = generate_answer(user_query)
+        print("\n✅ Generated Answer:\n")
+        print(answer)
+        print("\n" + "-" * 60 + "\n")

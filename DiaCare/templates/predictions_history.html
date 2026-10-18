@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - DiaCare</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="patient-portal">
+
+<!-- Navigation -->
+<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+    <div class="container">
+        <a class="navbar-brand d-flex align-items-center" href="{{ url_for('home') }}">
+            <span class="logo-icon">Hospital</span>
+            <span class="ms-2 fw-bold">DiaCare</span>
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item"><a class="nav-link active" href="{{ url_for('dashboard') }}">Dashboard</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ url_for('predict') }}">Predict</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ url_for('history') }}">History</a></li>   <!-- history only -->
+                <li class="nav-item"><a class="nav-link" href="{{ url_for('upload_lab') }}">Upload</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ url_for('logout') }}">Logout</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container my-5">
+    <div class="text-center mb-5">
+        <h1 class="display-5 fw-bold gradient-text">Patient Dashboard</h1>
+        <p class="lead text-muted">Welcome back, {{ patient.full_name }}!</p>
+    </div>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+          </div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    <!-- Stats Cards -->
+    <div class="row g-4 mb-5">
+        <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-lg rounded-4 patient-card">
+                <div class="card-body text-center p-4">
+                    <div class="stat-icon mb-3">Chart</div>
+                    <h2 class="display-4 fw-bold mb-2">{{ predictions|length }}</h2>
+                    <p class="text-muted mb-0">Total Predictions</p>
+                    <a href="{{ url_for('history') }}" class="btn btn-sm btn-outline-primary mt-2">View All</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-lg rounded-4 patient-card">
+                <div class="card-body text-center p-4">
+                    <div class="stat-icon mb-3">Document</div>
+                    <h2 class="display-4 fw-bold mb-2">0</h2>
+                    <p class="text-muted mb-0">Lab Reports</p>
+                    <a href="{{ url_for('upload_lab') }}" class="btn btn-sm btn-outline-primary mt-2">Upload New</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-lg rounded-4 patient-card">
+                <div class="card-body text-center p-4">
+                    <div class="stat-icon mb-3">Microscope</div>
+                    <h5 class="fw-bold mb-3">New Assessment</h5>
+                    <p class="text-muted mb-3">Check your diabetes risk</p>
+                    <a href="{{ url_for('predict') }}" class="btn btn-primary">Start Now</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Predictions Table -->
+    <div class="card shadow-lg border-0 rounded-4">
+        <div class="card-header bg-gradient-purple text-white p-4">
+            <h4 class="mb-0">Recent Assessments</h4>
+        </div>
+        <div class="card-body p-0">
+            {% if predictions %}
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Date</th><th>Result</th><th>Risk Level</th><th>Key Metrics</th><th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for p in predictions %}
+                        <tr>
+                            <td><small class="text-muted">{{ p.created_at[:10] }}<br>{{ p.created_at[11:16] }}</small></td>
+                            <td>
+                                {% if p.prediction_result == 'Low Risk' %}
+                                    <span class="badge bg-success">Low Risk</span>
+                                {% elif p.prediction_result == 'Moderate Risk' %}
+                                    <span class="badge bg-warning">Moderate Risk</span>
+                                {% else %}
+                                    <span class="badge bg-danger">High Risk</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <div class="progress" style="height:25px;">
+                                    <div class="progress-bar 
+                                        {% if p.risk_probability < 30 %}bg-success
+                                        {% elif p.risk_probability < 70 %}bg-warning
+                                        {% else %}bg-danger{% endif %}"
+                                         style="width: {{ p.risk_probability }}%">
+                                        {{ p.risk_probability }}%
+                                    </div>
+                                </div>
+                            </td>
+                            <td><small>Glucose: {{ p.glucose }}<br>BMI: {{ p.bmi }}<br>Age: {{ p.age }}</small></td>
+                            <td><a href="{{ url_for('result', prediction_id=p.id) }}" class="btn btn-sm btn-outline-primary">View</a></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div class="text-center py-5">
+                <h5 class="text-muted">No Predictions Yet</h5>
+                <a href="{{ url_for('predict') }}" class="btn btn-primary btn-lg mt-3">Make First Prediction</a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="text-center mt-5">
+        <div class="row g-3 justify-content-center">
+            <div class="col-auto"><a href="{{ url_for('predict') }}" class="btn btn-primary btn-lg">New Prediction</a></div>
+            <div class="col-auto"><a href="{{ url_for('upload_lab') }}" class="btn btn-outline-primary btn-lg">Upload Lab Report</a></div>
+            <div class="col-auto"><a href="{{ url_for('history') }}" class="btn btn-outline-primary btn-lg">View History</a></div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

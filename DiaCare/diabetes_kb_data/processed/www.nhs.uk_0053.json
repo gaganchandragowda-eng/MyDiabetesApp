@@ -1,0 +1,26 @@
+{
+  "url": "https://www.nhs.uk/medicines/insulin/",
+  "source_domain": "www.nhs.uk",
+  "source_name": "UK National Health Service",
+  "title": "Insulin",
+  "content": "Find information about types of insulin and how to take insulin to treat type 1 diabetes, type 2 diabetes and gestational diabetes. Insulin for type 1 diabetes How to take insulin and types of insulin for type 1 diabetes How to take insulin and types of insulin for type 1 diabetes Insulin for type 2 diabetes How to take insulin and types of insulin for type 2 diabetes How to take insulin and types of insulin for type 2 diabetes Insulin for gestational diabetes How to take insulin and types of insulin for gestational diabetes How to take insulin and types of insulin for gestational diabetes Rapid-acting insulin Brands: Admelog, Apidra, Fiasp, Humalog, Lyumjev, NovoRapid, Trurapi. Includes insulin aspart, lispro and glulisine. Brands: Admelog, Apidra, Fiasp, Humalog, Lyumjev, NovoRapid, Trurapi. Includes insulin aspart, lispro and glulisine. Short-acting insulin Brands: Actrapid, Humulin S. Also known as soluble insulin. Brands: Actrapid, Humulin S. Also known as soluble insulin. Intermediate-acting insulin Brands: Humulin I, Insulatard. Also known as isophane insulin. Brands: Humulin I, Insulatard. Also known as isophane insulin. Long-acting insulin Brands: Abasaglar, Lantus, Levemir, Semglee, Toujeo, Tresiba. Includes insulin detemir, glargine and degludec. Brands: Abasaglar, Lantus, Levemir, Semglee, Toujeo, Tresiba. Includes insulin detemir, glargine and degludec. Biphasic insulin Brands: Humalog Mix, Humulin M3, NovoMix. Also known as mixed insulin. Includes biphasic aspart, lispro and isophane. Brands: Humalog Mix, Humulin M3, NovoMix. Also known as mixed insulin. Includes biphasic aspart, lispro and isophane.",
+  "topics": [
+    "treatment"
+  ],
+  "word_count": 240,
+  "quality_score": 0.6,
+  "trust_score": 1.0,
+  "scraped_date": "2025-10-22T08:13:46.994423",
+  "headers": [
+    "Insulin",
+    "Insulin for type 1 diabetes",
+    "Insulin for type 2 diabetes",
+    "Insulin for gestational diabetes",
+    "Rapid-acting insulin",
+    "Short-acting insulin",
+    "Intermediate-acting insulin",
+    "Long-acting insulin",
+    "Biphasic insulin",
+    "Related information"
+  ]
+}

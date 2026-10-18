@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Doctor Appointments - DiaCare</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        * { box-sizing: border-box; }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #f3f4f7;
+            min-height: 100vh;
+            padding: 50px 20px;
+        }
+
+        /* ===== Header ===== */
+        .page-header {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border-radius: 24px;
+            padding: 40px 45px;
+            margin-bottom: 40px;
+            box-shadow: 0 12px 35px rgba(0,0,0,0.15);
+        }
+
+        .page-header h2 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .page-header p {
+            opacity: 0.9;
+            font-size: 1.05rem;
+        }
+
+        /* ===== Appointment Card ===== */
+        .appointment-card {
+            background: white;
+            border-radius: 22px;
+            padding: 28px 30px;
+            box-shadow: 0 10px 28px rgba(0,0,0,0.08);
+            transition: transform 0.25s ease;
+        }
+
+        .appointment-card:hover {
+            transform: translateY(-6px);
+        }
+
+        .patient-name {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #222;
+        }
+
+        .info-row {
+            font-size: 0.95rem;
+            color: #555;
+            margin-bottom: 6px;
+        }
+
+        .info-row strong {
+            color: #333;
+        }
+
+        /* ===== Status Badge ===== */
+        .status-badge {
+            padding: 8px 20px;
+            border-radius: 25px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            min-width: 110px;
+            text-align: center;
+        }
+
+        .Pending { background: #fff3cd; color: #856404; }
+        .Accepted { background: #d4edda; color: #155724; }
+        .Rejected { background: #f8d7da; color: #721c24; }
+        .Cancelled { background: #e2e3e5; color: #383d41; }
+
+        .btn-action {
+            border-radius: 20px;
+            font-size: 0.85rem;
+            padding: 6px 14px;
+        }
+
+        .empty-state {
+            text-align: center;
+            color: #777;
+            font-size: 1rem;
+            margin-top: 60px;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 40px;
+            font-size: 0.95rem;
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- HEADER -->
+    <div class="page-header">
+        <h2>📋 Appointment Requests</h2>
+        <p>Review and manage patient appointment requests</p>
+    </div>
+
+    {% if appointments %}
+    <div class="row g-4">
+        {% for a in appointments %}
+        <div class="col-lg-6">
+            <div class="appointment-card d-flex justify-content-between gap-4">
+
+                <!-- LEFT -->
+                <div>
+                    <div class="patient-name">
+                        {{ a.patient_name }}
+                    </div>
+
+                    <div class="info-row">
+                        <strong>Date:</strong> {{ a.appointment_date }}
+                    </div>
+                    <div class="info-row">
+                        <strong>Time:</strong> {{ a.appointment_time }}
+                    </div>
+                    <div class="info-row mt-2">
+                        <strong>Reason:</strong> {{ a.reason }}
+                    </div>
+                    <div class="info-row">
+                        <strong>Phone:</strong> {{ a.patient_phone }}
+                    </div>
+                </div>
+
+                <!-- RIGHT -->
+                <div class="d-flex flex-column align-items-end justify-content-between">
+
+                    <div class="status-badge {{ a.status }}">
+                        {{ a.status }}
+                    </div>
+
+                    {% if a.status == 'Pending' %}
+                    <div class="d-flex gap-2 mt-3">
+                        <form method="POST" action="{{ url_for('update_appointment') }}">
+                            <input type="hidden" name="appt_id" value="{{ a.id }}">
+                            <input type="hidden" name="status" value="Accepted">
+                            <button class="btn btn-success btn-action">
+                                ✔ Accept
+                            </button>
+                        </form>
+
+                        <form method="POST" action="{{ url_for('update_appointment') }}">
+                            <input type="hidden" name="appt_id" value="{{ a.id }}">
+                            <input type="hidden" name="status" value="Rejected">
+                            <button class="btn btn-outline-danger btn-action">
+                                ✖ Reject
+                            </button>
+                        </form>
+                    </div>
+                    {% endif %}
+
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+        <div class="empty-state">
+            No appointment requests at the moment.
+        </div>
+    {% endif %}
+
+    <!-- Toasts -->
+    <div class="toast-container position-fixed top-0 end-0 p-4" style="z-index: 9999;">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% for category, message in messages %}
+            <div class="toast align-items-center text-bg-{{ category }} border-0 mb-3"
+                 role="alert"
+                 data-bs-delay="3500">
+                <div class="d-flex">
+                    <div class="toast-body fw-semibold">
+                        {{ message }}
+                    </div>
+                    <button type="button"
+                            class="btn-close btn-close-white me-2 m-auto"
+                            data-bs-dismiss="toast"></button>
+                </div>
+            </div>
+            {% endfor %}
+        {% endwith %}
+    </div>
+
+    <a href="{{ url_for('doctor_dashboard') }}" class="back-link">
+        ← Back to Dashboard
+    </a>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    document.querySelectorAll('.toast').forEach(el => {
+        new bootstrap.Toast(el).show();
+    });
+});
+</script>
+
+</body>
+</html> 

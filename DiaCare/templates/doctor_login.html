@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctor Login - DiaCare</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .login-container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+            max-width: 900px;
+            width: 100%;
+            display: flex;
+        }
+
+        .login-left {
+            flex: 1;
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            padding: 60px 40px;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .login-left h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        .login-left p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .login-icon {
+            font-size: 5rem;
+            margin-bottom: 20px;
+        }
+
+        .login-right {
+            flex: 1;
+            padding: 60px 40px;
+        }
+
+        .login-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #11998e;
+            margin-bottom: 10px;
+        }
+
+        .login-subtitle {
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        .form-control {
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+        }
+
+        .btn-login {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .btn-login:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(17, 153, 142, 0.4);
+        }
+
+        /* already present */
+        .hidden {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .login-container {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<script>
+function togglePassword(inputId, iconId) {
+    const input = document.getElementById(inputId);
+    const icon = document.getElementById(iconId);
+    if (input.type === "password") {
+        input.type = "text";
+        icon.textContent = "🫣";
+    } else {
+        input.type = "password";
+        icon.textContent = "👁️";
+    }
+}
+</script>
+
+<body>
+
+<div class="login-container">
+
+    <div class="login-left">
+        <div class="login-icon">👨‍⚕️</div>
+        <h2>Doctor Portal</h2>
+        <p>Manage your patients and provide expert diabetes care</p>
+    </div>
+
+    <div class="login-right">
+        <h2 class="login-title">Doctor Login</h2>
+        <p class="login-subtitle">Access your professional dashboard</p>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }} mt-2">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+        {% endwith %}
+
+        <!-- 🔐 LOGIN FORM (UNCHANGED) -->
+        <form method="POST" id="loginForm">
+
+            <div class="mb-3">
+                <label class="form-label">Email Address</label>
+                <input type="email" name="email" class="form-control"
+                       placeholder="Enter your email" required>
+            </div>
+
+            <div class="mb-2">
+                <label class="form-label">Password</label>
+                <div class="input-group">
+                    <input type="password" name="password" id="password"
+                           class="form-control"
+                           placeholder="Enter your password" required>
+
+                    <button type="button" class="btn btn-outline-secondary"
+                            onclick="togglePassword('password', 'eye1')">
+                        <span id="eye1">👁️</span>
+                    </button>
+                </div>
+
+                <div class="text-end mt-1">
+                    <a href="#" onclick="showForgot()"
+                       style="font-size:0.9rem; color:#11998e; text-decoration:none;">
+                        Forgot password?
+                    </a>
+                </div>
+            </div>
+
+            <div class="mb-3 form-check">
+                <input type="checkbox" class="form-check-input" id="remember">
+                <label class="form-check-label" for="remember">Remember me</label>
+            </div>
+
+            <button type="submit" class="btn btn-login">Login</button>
+
+            <!-- ✅ LOGIN LINKS (CORRECT PLACE) -->
+            <div class="register-link text-center mt-3">
+                New doctor? <a href="/doctor/register">Register here</a>
+            </div>
+
+            <div class="back-home text-center mt-1">
+                <a href="/">← Back to Home</a>
+            </div>
+        </form>
+
+        <!-- 🔁 FORGOT PASSWORD FORM (UNCHANGED, ONLY LINKS KEPT HERE) -->
+        <form id="forgotForm" method="POST" action="/doctor/forgot-password"
+              class="hidden mt-4">
+
+            <h5 class="text-success fw-bold mb-3">Reset Password</h5>
+
+            <input type="email" name="email" class="form-control mb-3"
+                   placeholder="Registered email address" required>
+
+            <input type="text" name="license_number" class="form-control mb-3"
+                   placeholder="Medical license / registration number" required>
+
+            <input type="password" name="new_password" class="form-control mb-3"
+                   placeholder="Create new password" required>
+
+            <input type="password" name="confirm_password" class="form-control mb-3"
+                   placeholder="Confirm new password" required>
+
+            <button type="submit" class="btn btn-login mb-2">
+                Update Password
+            </button>
+
+            <!-- ✅ FORGOT LINKS (CORRECT PLACE) -->
+            <div class="text-center mt-3">
+                <a href="#" onclick="showLogin()"
+                   style="display:block; margin-bottom:6px; color:#11998e; text-decoration:none;">
+                    ← Back to Login
+                </a>
+
+                <a href="/" style="color:#11998e; text-decoration:none;">
+                    ← Back to Home
+                </a>
+            </div>
+        </form>
+
+    </div>
+</div>
+
+<script>
+function showForgot() {
+    document.getElementById("loginForm").classList.add("hidden");
+    document.getElementById("forgotForm").classList.remove("hidden");
+}
+function showLogin() {
+    document.getElementById("forgotForm").classList.add("hidden");
+    document.getElementById("loginForm").classList.remove("hidden");
+}
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Take Appointment - DiaCare</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Bootstrap + Poppins -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #f3f4f7;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .appointment-card {
+            background: white;
+            border-radius: 18px;
+            padding: 30px;
+            width: 100%;
+            max-width: 480px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+        }
+
+        .appointment-title {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: #667eea;
+            margin-bottom: 8px;
+        }
+
+        .appointment-subtitle {
+            font-size: 0.95rem;
+            color: #666;
+            margin-bottom: 25px;
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .form-control {
+            border-radius: 12px;
+            padding: 10px 14px;
+            border: 1.8px solid #e0e0e0;
+        }
+
+        .form-control:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 0.2rem rgba(102,126,234,0.15);
+        }
+
+        .btn-submit {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            font-weight: 600;
+            border-radius: 14px;
+            padding: 12px;
+            border: none;
+            transition: all 0.25s ease;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102,126,234,0.35);
+        }
+
+        .back-link {
+            text-align: center;
+            margin-top: 18px;
+        }
+
+        .back-link a {
+            text-decoration: none;
+            color: #667eea;
+            font-weight: 500;
+        }
+
+        .back-link a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="appointment-card">
+
+    <div class="text-center">
+        <div class="appointment-title">📅 Take Appointment</div>
+        <div class="appointment-subtitle">
+            Schedule a consultation with your doctor
+        </div>
+    </div>
+
+    <form method="POST">
+        <input type="hidden" name="doctor_id" value="{{ doctor_id }}">
+
+        <!-- DATE -->
+        <div class="mb-3">
+            <label class="form-label">Appointment Date</label>
+            <input
+                type="date"
+                name="date"
+                class="form-control"
+                min="{{ date.today().isoformat() }}"
+                required>
+        </div>
+
+        <!-- TIME -->
+        <div class="mb-3">
+            <label class="form-label">Preferred Time</label>
+            <input
+                type="time"
+                name="time"
+                class="form-control"
+                min="09:00"
+                max="18:00"
+                required>
+            <small class="text-muted">Consultation hours: 9:00 AM – 6:00 PM</small>
+        </div>
+
+        <!-- REASON -->
+        <div class="mb-3">
+            <label class="form-label">Reason for Visit</label>
+            <textarea
+                name="reason"
+                class="form-control"
+                rows="3"
+                placeholder="Briefly describe your concern..."
+                required></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-submit w-100">
+            Submit Appointment Request
+        </button>
+    </form>
+
+    <div class="back-link">
+        <!-- ✅ FIXED -->
+        <a href="{{ url_for('dashboard') }}">← Back to Dashboard</a>
+    </div>
+
+</div>
+
+</body>
+</html>

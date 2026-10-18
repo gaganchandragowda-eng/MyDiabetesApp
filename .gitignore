@@ -1,0 +1,39 @@
+# Python virtual environments
+venv/
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+.Python
+*.egg-info/
+dist/
+build/
+
+# Secret/Environment files - NEVER commit these
+api.env
+DiaCare/api.env
+*.env
+.env
+.env.local
+.env.production
+
+# Database files
+*.db
+*.sqlite
+*.sqlite3
+
+# Logs
+*.log
+
+# macOS
+.DS_Store
+._*
+.Spotlight-V100
+
+# Node
+node_modules/
+
+# Large generated folders
+uploads/
+reports/
+*.zip

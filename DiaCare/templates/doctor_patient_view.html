@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Patient Details - DiaCare</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg,#11998e,#38ef7d);
+            min-height: 100vh;
+            padding: 25px;
+        }
+
+        .container-box {
+            background: #fff;
+            padding: 35px;
+            border-radius: 20px;
+            box-shadow: 0 10px 35px rgba(0,0,0,0.2);
+            max-width: 1100px;
+            margin: auto;
+        }
+
+        .page-title {
+            font-size: 2.4rem;
+            font-weight: 700;
+            color: #11998e;
+        }
+
+        .section-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: #11998e;
+            margin-top: 30px;
+            margin-bottom: 15px;
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .label { font-weight: 600; color: #444; }
+        .value { font-weight: 500; }
+
+        .risk-badge {
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+        .normal { background: #d4edda; color: #155724; }
+        .prediabetes { background: #fff3cd; color: #856404; }
+        .diabetes { background: #f8d7da; color: #721c24; }
+
+        .accordion-button:not(.collapsed) {
+            background: #e4fff3;
+            color: #11998e;
+        }
+
+        .report-box {
+            background: #fafaff;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 4px 18px rgba(0,0,0,0.07);
+        }
+
+        .report-box * {
+            margin: 0;
+            padding: 0;
+        }
+
+        .report-box h2 {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .report-box h3 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #764ba2;
+            margin: 12px 0 8px;
+        }
+
+        .report-box p {
+            font-size: 1rem;
+            line-height: 1.7;
+            color: #1f2937;
+            margin-bottom: 10px;
+        }
+
+        .report-box ul {
+            padding-left: 18px;
+            margin-bottom: 10px;
+        }
+
+        .report-box li {
+            margin-bottom: 6px;
+            color: #374151;
+        }
+
+        .report-box hr {
+            margin: 16px 0;
+            border-top: 2px solid #e3e3ff;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container-box">
+
+    <a href="{{ url_for('view_patients') }}" class="btn btn-success mb-3">← Back</a>
+
+    <h1 class="page-title">👤 Patient Details</h1>
+
+    <!-- Basic Information -->
+    <div class="section-title">Personal Information</div>
+
+    <div class="info-row"><span class="label">Name:</span> <span class="value">{{ patient.full_name }}</span></div>
+    <div class="info-row"><span class="label">Email:</span> <span class="value">{{ patient.email }}</span></div>
+    <div class="info-row"><span class="label">Phone:</span> <span class="value">{{ patient.phone or 'Not provided' }}</span></div>
+    <div class="info-row"><span class="label">Age:</span> <span class="value">{{ age }}</span></div>
+    <div class="info-row"><span class="label">Gender:</span> <span class="value">{{ patient.gender }}</span></div>
+
+    <!-- Prediction History -->
+    <div class="section-title">Assessment History</div>
+
+    {% if assessments %}
+    <div class="accordion" id="predictAccordion">
+
+        {% for a in assessments %}
+        <div class="accordion-item">
+
+            <h2 class="accordion-header" id="heading{{ a.id }}">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ a.id }}">
+                    <strong>{{ a.created_at[:10] }}</strong> —
+
+                    {% if a.prediction_result == "Normal" %}
+                        <span class="risk-badge normal">Normal</span>
+                    {% elif a.prediction_result == "Prediabetes" %}
+                        <span class="risk-badge prediabetes">Prediabetes</span>
+                    {% else %}
+                        <span class="risk-badge diabetes">Diabetes</span>
+                    {% endif %}
+
+                    • {{ a.risk_probability }}%
+                </button>
+            </h2>
+
+            <div id="collapse{{ a.id }}" class="accordion-collapse collapse">
+                <div class="accordion-body">
+
+                    <h6>Health Parameters</h6>
+                    <ul>
+                        <li>Gender: <b>{{ a.gender }}</b></li>
+                        <li>Age: <b>{{ a.age }}</b></li>
+                        <li>BMI: <b>{{ a.bmi }}</b></li>
+                        <li>Systolic BP: <b>{{ a.systolic_bp }}</b></li>
+                        <li>Glucose: <b>{{ a.glucose }}</b></li>
+                        <li>HbA1c: <b>{{ a.hba1c }}</b></li>
+                        <li>Triglycerides: <b>{{ a.triglycerides }}</b></li>
+                    </ul>
+
+                    <h5 class="mt-4 mb-2">AI Medical Report</h5>
+
+                        <div class="report-box">
+                            {{ a.recommendations }}
+                        </div>
+
+                    <a class="btn btn-primary" href="/download/{{ a.id }}/pdf">Download Report PDF</a>
+
+                </div>
+            </div>
+
+        </div>
+        {% endfor %}
+
+    </div>
+    {% else %}
+        <p class="text-muted">No assessments available.</p>
+    {% endif %}
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

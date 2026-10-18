@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>History - DiaCare</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container my-5">
+  <h1 class="mb-4">Your Prediction History</h1>
+  {% if predictions %}
+    <div class="list-group">
+      {% for p in predictions %}
+        <a href="{{ url_for('download', id=p['id']) }}" class="list-group-item list-group-item-action">
+          <div class="d-flex w-100 justify-content-between">
+            <h5 class="mb-1">{{ p['prediction_result'] }}</h5>
+            <small>{{ p['created_at'] }}</small>
+          </div>
+          <p class="mb-1">Probability: {{ p['risk_probability'] }}%</p>
+          <small>Glucose: {{ p['glucose'] }}, BMI: {{ p['bmi'] }}, Age: {{ p['age'] }}</small>
+        </a>
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="alert alert-info">No predictions yet.</div>
+  {% endif %}
+  <a href="{{ url_for('dashboard') }}" class="btn btn-secondary mt-4">Back to Dashboard</a>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

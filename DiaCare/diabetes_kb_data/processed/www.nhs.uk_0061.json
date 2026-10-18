@@ -1,0 +1,26 @@
+{
+  "url": "https://www.nhs.uk/tests-and-treatments/cgm-and-hcl-for-diabetes/",
+  "source_domain": "www.nhs.uk",
+  "source_name": "UK National Health Service",
+  "title": "Continuous glucose monitoring and hybrid closed loop for diabetes",
+  "content": "Continuous glucose monitors and hybrid closed loop systems are technology that can help people with diabetes manage their blood glucose (sugar) levels. They're available on the NHS for some people. A continuous glucose monitor (CGM) is a device for people with diabetes that lets you check your glucose (sugar) levels at any time. It lets you see patterns in your levels and check if your blood glucose is too high or low. It can help you control your blood glucose levels, as you'll have more information and can take action quickly. It can help you and your diabetes team see: if your glucose levels are going up or down high – it could be a sign of hyperglycaemia low – it could be a sign of hypoglycaemia a sensor – a small device you attach to your arm or tummy that senses how much glucose is in the fluid under your skin, called interstitial fluid a reader or receiver, which shows the results (you can also get the results on your smartphone, if you have one) With some types, called real-time CGM, the sensor sends results to the receiver or your phone every few minutes. You can see your glucose levels on your receiver at any time. Some types can send results to an insulin pump, so you can see your glucose levels on your pump. With other types of CGM, sometimes called flash monitors or intermittently scanned CGM, you need to scan the sensor with the reader or with your phone to see the results. There are several different types of real-time CGM. The only type of flash monitor available is the Abbott FreeStyle Libre 2, although this works in the same way as real-time CGM if you use it with a smartphone. The original Abbott FreeStyle Libre has been discontinued. Most types of CGM, including the FreeStyle Libre 2, have optional alarms to alert you if your blood glucose levels go too low or too high. You generally need to replace a sensor every 7 to 14 days, depending on the type of monitor you have. Interstitial fluid glucose readings are a few minutes behind your blood glucose levels. This means you'll still need to do finger-prick checks every now and then, particularly when you drive or have a hypo. To get the best out of CGM, you'll need to look at the information it gives you with your team. A hybrid closed loop system (sometimes called an \"artificial pancreas\") is technology that allows a CGM to work together with an insulin pump to help you manage your blood glucose. The CGM monitors your glucose levels all the time. A computer programme on your phone, or inside your insulin pump, uses this data to work out how much insulin you need. The pump then automatically gives you the right amount of insulin. You'll still need to work out how much carbohydrate is in your food and drink, and put this data into the system before meals. A hybrid closed loop system can improve your blood glucose levels, reduce the risk of hypos and make it easier to manage diabetes. CGM should be available on the NHS to anyone with type 1 diabetes. Children and young people will usually be offered real-time CGM. Adults will usually be offered a choice of real-time CGM or flash. Hybrid closed loop systems are being made available on the NHS to some people with type 1 diabetes. They'll be introduced gradually over 5 years from April 2024, starting with people who need them most. This is because it will take time to make sure the technology can be made available safely for everyone who can benefit from it. Hybrid closed loop is planned to be available to all children and young people with type 1 diabetes, and eventually to adults with type 1 diabetes who either: have blood glucose levels (HbA1c levels) of 58 mmol/mol or more have serious problems with hypos despite using an insulin pump or CGM on its own and carefully trying to manage their blood glucose If you think you might be eligible for hybrid closed loop, speak to your diabetes team at your next appointment. They'll be able to explain your options. If you have type 2 diabetes you should be offered a flash monitor on the NHS if you take insulin at least twice a day and one of these apply: you do not always recognise the symptoms when you have a hypo you cannot monitor your own blood glucose levels using finger-prick tests you would need to do finger-prick tests at least 8 times a day Insulin pumps and hybrid closed loop systems are not currently available on the NHS for people with type 2 diabetes. NHS England: Decision support tool – making a decision about managing type 1 diabetes Page last reviewed: 14 October 2024 Next review due: 14 October 2027",
+  "topics": [
+    "management",
+    "treatment",
+    "diet_nutrition"
+  ],
+  "word_count": 816,
+  "quality_score": 1.0,
+  "trust_score": 1.0,
+  "scraped_date": "2025-10-22T08:14:02.648515",
+  "headers": [
+    "Continuous glucose monitoring and hybrid closed loop for diabetes",
+    "What is a continuous glucose monitor?",
+    "How it works",
+    "What is hybrid closed loop?",
+    "Getting CGM or hybrid closed loop on the NHS",
+    "If you have type 1 diabetes",
+    "If you have type 2 diabetes",
+    "Find out more"
+  ]
+}

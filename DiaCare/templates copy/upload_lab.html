@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Upload Lab Report - DiaCare</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="p-4">
+  <div class="container" style="max-width:700px;">
+    <h2 class="mb-4">Upload Lab Report</h2>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, msg in messages %}
+          <div class="alert alert-{{ category }}">{{ msg }}</div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    <form method="post" enctype="multipart/form-data">
+      <div class="mb-3">
+        <label class="form-label">Patient ID (or leave blank to use logged-in user)</label>
+        <input type="text" class="form-control" name="patient_id" placeholder="123" />
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Report type</label>
+        <input type="text" class="form-control" name="report_type" placeholder="HbA1c / CBC / Lipid Profile" />
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">File</label>
+        <input type="file" class="form-control" name="file" />
+        <div class="form-text">Allowed: pdf, png, jpg, jpeg, txt, csv</div>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Notes (optional)</label>
+        <textarea class="form-control" name="notes" rows="3"></textarea>
+      </div>
+
+      <button type="submit" class="btn btn-primary">Upload</button>
+      <a href="{{ url_for('dashboard') }}" class="btn btn-link">Back to dashboard</a>
+    </form>
+  </div>
+</body>
+</html>

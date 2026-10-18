@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctor Dashboard - DiaCare</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .navbar { background: white !important; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.1); margin-bottom: 30px; }
+        .navbar-brand { font-weight: 700; color: #11998e !important; }
+        .nav-link { color: #666 !important; font-weight: 500; }
+        .nav-link.active { color: #11998e !important; }
+        .badge { background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); }
+
+        .page-header { background: white; border-radius: 20px; padding: 40px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); text-align: center; }
+        .page-title { font-size: 2.5rem; font-weight: 700; background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+                      -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+
+        .stat-card {
+            background: white; border-radius: 20px; padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1); border-left: 5px solid #11998e;
+            text-align: center;
+        }
+        .stat-number { font-size: 3rem; font-weight: 700;
+                       background: linear-gradient(135deg,#11998e,#38ef7d);
+                       -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+
+        .info-card {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+        .card-header-custom {
+            background: linear-gradient(135deg,#11998e,#38ef7d);
+            color: white;
+            padding: 25px;
+            font-size: 1.3rem;
+            font-weight: 600;
+        }
+
+        .profile-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #e0e0e0; }
+        .profile-label { font-weight: 600; color: #555; }
+        .profile-value { font-weight: 500; }
+
+        .risk-badge { padding: 8px 15px; border-radius: 20px; font-weight: 600; }
+        .risk-low { background:#d4edda;color:#155724; }
+        .risk-moderate { background:#fff3cd;color:#856404; }
+        .risk-high { background:#f8d7da;color:#721c24; }
+
+        .btn-action {
+            background: linear-gradient(135deg,#11998e,#38ef7d);
+            color:white; padding:12px 30px; border-radius:10px; font-weight:600;
+            text-decoration:none;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- NAV -->
+    <nav class="navbar navbar-expand-lg">
+        <div class="container">
+            <a class="navbar-brand" href="/">🏥 DiaCare</a>
+            <div class="collapse navbar-collapse">
+                <ul class="navbar-nav ms-auto">
+                    <li><a class="nav-link active" href="/doctor/dashboard">Dashboard</a></li>
+                    <li><a class="nav-link" href="/doctor/patients">Patients</a></li>
+                    <li><a class="nav-link" href="/doctor/analytics">Analytics</a></li>
+                    <li><a class="nav-link" href="/doctor/settings">Settings</a></li>
+                    <li><span class="badge nav-link">Dr. {{ doctor.full_name }}</span></li>
+                    <li><a class="nav-link" href="/logout">Logout</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- HEADER -->
+    <div class="page-header mb-4">
+        <h1 class="page-title">👨‍⚕️ Doctor Dashboard</h1>
+        <p class="text-muted lead">Welcome back, Dr. {{ doctor.full_name }}</p>
+    </div>
+
+    <!-- STATS -->
+    <div class="row g-4 mb-4">
+        <div class="col-md-4"><div class="stat-card"><div class="stat-number">{{ patients_count }}</div><p>Total Patients</p></div></div>
+        <div class="col-md-4"><div class="stat-card"><div class="stat-number">{{ predictions_count }}</div><p>Total Assessments</p></div></div>
+        <div class="col-md-4"><div class="stat-card"><div class="stat-number">{{ doctor.specialization or 'General' }}</div><p>Specialization</p></div></div>
+    </div>
+
+    <!-- PROFILE -->
+    <div class="info-card">
+        <div class="card-header-custom">👨‍⚕️ Your Profile</div>
+        <div class="p-4">
+            <div class="profile-row"><span class="profile-label">Email</span><span class="profile-value">{{ doctor.email }}</span></div>
+            <div class="profile-row"><span class="profile-label">Phone</span><span class="profile-value">{{ doctor.phone or 'Not provided' }}</span></div>
+            <div class="profile-row"><span class="profile-label">Hospital</span><span class="profile-value">{{ doctor.hospital_name or 'Not provided' }}</span></div>
+            <div class="profile-row"><span class="profile-label">License</span><span class="profile-value">{{ doctor.license_number }}</span></div>
+            <div class="profile-row"><span class="profile-label">Experience</span><span class="profile-value">{{ doctor.years_experience }} years</span></div>
+            <div class="profile-row"><span class="profile-label">Member Since</span><span class="profile-value">{{ doctor.created_at[:10] }}</span></div>
+        </div>
+    </div>
+
+    <!-- RECENT ASSESSMENTS -->
+    <div class="info-card">
+        <div class="card-header-custom">📋 Recent Patient Assessments</div>
+
+        <div class="p-0">
+            <table class="table table-custom">
+                <thead>
+                    <tr>
+                        <th>Date</th><th>Patient</th><th>Result</th><th>Risk</th><th>Metrics</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    {% for r in recent_predictions %}
+                    <tr>
+                        <td>{{ r.created_at[:10] }}<br><small>{{ r.created_at[11:16] }}</small></td>
+                        <td><strong>{{ r.patient_name }}</strong><br><small>Age: {{ r.age }}</small></td>
+
+                        <td>
+                            {% if r.prediction_result == 'Low Risk' %}
+                                <span class="risk-badge risk-low">✓ Low</span>
+                            {% elif r.prediction_result == 'Moderate Risk' %}
+                                <span class="risk-badge risk-moderate">⚠ Moderate</span>
+                            {% else %}
+                                <span class="risk-badge risk-high">⚠ High</span>
+                            {% endif %}
+                        </td>
+
+                        <td>{{ r.risk_probability }}%</td>
+
+                        <td>
+                            <small>
+                                Glucose: {{ r.glucose }}<br>
+                                BMI: {{ r.bmi }}<br>
+                                BP: {{ r.blood_pressure }}
+                            </small>
+                        </td>
+                    </tr>
+                    {% endfor %}
+
+                    {% if recent_predictions|length == 0 %}
+                    <tr><td colspan="5" class="text-center py-4 text-muted">No recent assessments</td></tr>
+                    {% endif %}
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- QUICK ACTIONS -->
+    <div class="text-center mt-4">
+        <a href="/doctor/patients" class="btn-action">👥 Patients</a>
+        <a href="/doctor/analytics" class="btn-action ms-3">📈 Analytics</a>
+        <a href="/doctor/settings" class="btn-action ms-3">⚙ Settings</a>
+    </div>
+
+</body>
+</html>
